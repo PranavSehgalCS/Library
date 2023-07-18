@@ -1,0 +1,25 @@
+/** ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    FILE:   styles.cc
+    AUTHOR: Pranav Sehgal
+            + Auto-generated on ng create
+    DESCRIPTION : USED to write css styles for index.html
+                  CAN BE USED by other components by redirecting  StyleURL Here
+///////////////////////////////////////////////////////////////////////////////////////////////////////*/
+body{
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0;
+    position: absolute; 
+    border: solid 3px blue;
+}
+:host {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0;
+    position: absolute; 
+    border: solid 3px yellow;
+} 

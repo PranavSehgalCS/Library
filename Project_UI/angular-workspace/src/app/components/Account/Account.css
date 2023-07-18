@@ -1,0 +1,66 @@
+:host {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: absolute; 
+    border: solid 3px yellow;
+}
+body{
+    --color-sand: #ffb356;
+    --color-purple: #da89f8;
+
+
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0;
+    position: absolute; 
+    border: solid 3px blue;
+
+    background-color: var(--color-sand);
+    display:flex;
+    text-align: center;
+    align-content: center;
+    justify-content: space-around
+}
+.container{
+    width: 50%;
+    height:60%;
+    min-height: 400px;
+    margin-top: 10%;
+    padding-top: 1%;
+    border-radius: 50px;
+    background-color: var(--color-purple);
+}
+.container,
+.form_button {
+    font-size: 20px;
+    font-family: “Comic Sans MS”, “Comic Sans”, cursive;
+}
+.form_message--error{
+    font-size: 30px;
+    color: red;
+}
+.form_input{
+    width : 60%;
+    margin-top: 1%;
+    font-size: 20px;
+    margin-bottom: 1%;
+    border-radius: 24px;
+
+    padding-left: 2%;
+    padding-top: 1.5%;
+    padding-bottom: 1%;
+    border-radius: 24px;
+}
+.form_button {
+    margin-top: 1%;
+
+    width:50%
+}
+
+.form_link{
+    font-size: 24px; 
+}
