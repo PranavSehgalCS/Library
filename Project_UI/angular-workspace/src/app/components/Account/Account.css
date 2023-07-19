@@ -6,19 +6,11 @@
     position: absolute; 
 }
 body{
-    --color-button: #fb7af7 ;
     --color-sand: #ffb356;
     --color-purple: #da89f8;
-    --color-red-button: rgb(255, 112, 112);
-    --color-del-button: rgb(250, 87, 87); 
-
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    margin: 0;
-    position: absolute; 
-    border: solid 3px blue;
+    --color-button: #fb7af7 ;
+    --color-red-button: #ff7070;
+    --color-del-button: #fa5757; 
 
     background-color: var(--color-sand);
     display:flex;

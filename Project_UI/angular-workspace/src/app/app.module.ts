@@ -17,13 +17,17 @@ import { AppRoutingModule } from './app-routing.module';
 import { SignupComponent } from './components/Account/signup/signup.component';
 import { LoginComponent } from './components/Account/login/login.component';
 import { AccPageComponent } from './components/Account/acc-page/acc-page.component';
+import { NavbarComponent } from './components/Nav_and_Dash/navbar/navbar.component';
+import { DashboardComponent } from './components/Nav_and_Dash/dashboard/dashboard.component'; 
 
 @NgModule({
   declarations: [
     AppComponent,
     SignupComponent,
     LoginComponent,
-    AccPageComponent
+    AccPageComponent,
+    NavbarComponent,
+    DashboardComponent,
     ],
   imports: [
     BrowserModule,

@@ -10,16 +10,7 @@ body{
     left: 0;
     right: 0;
     bottom: 0;
-    margin: 0;
+    margin:  0;
     position: absolute; 
-    border: solid 3px blue;
+    background-color: #ffb356;
 }
-:host {
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    margin: 0;
-    position: absolute; 
-    border: solid 3px yellow;
-} 

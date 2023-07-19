@@ -28,6 +28,10 @@ export class AccountService {
       return false;
     }
   }
+  isAdmin():boolean{
+
+    return (getCookie('isAdmin')=='true');
+  }
   getLoggedAccount(){
     return this.currAccount;
   }
@@ -41,6 +45,7 @@ export class AccountService {
   }
 
   logout():void{
+    this.currAccount = new Account(0,'','',false);
     removeCookie('accId');
     removeCookie('accName');
     removeCookie('accPass');

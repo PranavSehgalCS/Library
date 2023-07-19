@@ -18,7 +18,7 @@ export class LoginComponent {
     private accountService: AccountService 
   ){
     if(accountService.isLoggedIn()){
-      this.router.navigate(['/accPage']);
+      this.router.navigate(['/dashboard']);
     }else{
       this.titleService.setTitle('Login to Library'); 
     }

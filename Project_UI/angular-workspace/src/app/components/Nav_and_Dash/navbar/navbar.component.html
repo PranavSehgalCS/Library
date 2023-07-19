@@ -1,0 +1,25 @@
+<body style="max-height: 60px;">
+
+    <div  *ngIf="this.logged()" class = "navbar_container">
+        <div>
+            
+        </div>
+        <div   *ngIf="this.isAdmin()" (click)="this.move_to('adminDashboard')" class = "navbar_component">
+            Admin Dashboard
+        </div>
+        <div   *ngIf="!this.isAdmin()" (click)="this.move_to('adminDashboard')" class = "navbar_component">
+            Dashboard
+        </div>
+
+        <div (click)="this.log_out()" class = "navbar_component" style="float: right;">
+            Logout</div>
+        <div (click)="this.move_to('accPage')" class = "navbar_component" style="float: right;">
+            Account Page</div>
+    </div>
+
+    <div *ngIf="!this.logged()"  class = "navbar_container">
+        <div (click)="this.move_to('login')" class = "navbar_component" style="float: right; background-color: greenyellow;">
+            Login
+        </div>
+    </div>
+</body>
