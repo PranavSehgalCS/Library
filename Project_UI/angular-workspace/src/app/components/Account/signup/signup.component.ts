@@ -15,13 +15,17 @@ export class SignupComponent {
     private titleService:Title,
     private accountService:AccountService
   ){
-    this.titleService.setTitle("Sign up");
+    if(accountService.isLoggedIn()){
+      this.router.navigate(['/dashboard']);
+    }else{
+      this.titleService.setTitle('Sign Up For Library!'); 
+    }
   }
   
   public errMsg:string ="";
 
   async submitSignupForm( accName:string, accPass:string, accPass2:string){
-    accName = accName.toLowerCase();
+    accName = accName.toLowerCase().trim();
     if(accName.length == 0) {
       this.errMsg = ("Please enter a Username");
     }else if(accPass.length == 0){
@@ -32,29 +36,32 @@ export class SignupComponent {
       this.errMsg = ("Password Lenght Can't Exceed 32 Chars!");
     }else{
       try{
-        const newUser = new Account( 0 ,accName, accPass, false );
+        const newUser = new Account( 0 , accName ,this.accountService.hashPass(accPass) , false );
         var acctResponse:number = -1;
-        await this.accountService.addAccount(newUser).subscribe( res =>{
-          alert(res);
-          if(res!=null){
-            acctResponse=res;
-          }
+        this.accountService.addAccount(newUser).subscribe( res =>{
+          acctResponse=res;
         });
-        await this.accountService.delay(1000);
-
-        if(acctResponse == null){
+        for(var i = 0; i<30;i++){
+          if(acctResponse == -1){
+            await this.accountService.delay(100);
+          }else{
+            break;
+          }
+        }
+ 
+        if( acctResponse == null){
           this.errMsg = ("Error occurred while adding account.");
-        }else if(acctResponse == -1){
+        }else if( acctResponse == -1){
           this.errMsg = ("Request Timed Out");
-        }else if(acctResponse == 1){
+        }else if( acctResponse == 1){
           this.errMsg = ("UserName Already Exists, Please Choose a New One");
-        }else if(acctResponse == 2){
+        }else if( acctResponse == 2){
           this.errMsg = ("No DB Connection! Please try again later");
-        }else if(acctResponse == 3){
+        }else if( acctResponse == 3){
           this.errMsg = ("Account ID Error(DB_Related)! Please try again later");
-        }else if(acctResponse == 4){
+        }else if( acctResponse == 4){
           this.errMsg = ("A Backend Error Occured! Please try again later");
-        }else if(acctResponse  == 0){
+        }else if( acctResponse  == 0){
           alert("Account Created Successfully!\n Please continue to login!");
           this.router.navigate(['/login']);
         }else{

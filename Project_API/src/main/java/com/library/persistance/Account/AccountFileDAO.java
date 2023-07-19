@@ -87,26 +87,29 @@ public class AccountFileDAO implements AccountDAO {
     @Override
     public int createAccount(String accName, String accPass){
         Integer retVal = -1;
-        if(nextId<5){
-            if(!setNextId()){
-                return 3;
-            }
-        }
         try {
             retVal = 0;
             accName =accName.toLowerCase();
-            ResultSet ress = comm.getResult("SELECT accId FROM accounts WHERE accName = " + comm.qot(accName.toLowerCase())+";");
+            ResultSet ress = comm.getResult("SELECT accId FROM accounts WHERE accName = '" + accName.toLowerCase() +"';");
             if(ress == null){
-                return 2;
+                retVal = 2;
             }else if(ress.next()){
-                return 1;
+                retVal = 1;
             }else{
-                AccountFileDAO.nextId++;
-                if(!comm.setQuery("INSERT INTO accounts VALUES("+AccountFileDAO.nextId+", "+comm.qot(accName.toLowerCase())+", "+comm.qot(accPass)+" , false);")){
-                    return 4;
+                if(nextId<5){
+                    if(!setNextId()){
+                        return 3;
+                    }
+                }
+                if(!comm.setQuery("INSERT INTO accounts VALUES("+AccountFileDAO.nextId+", '"+ accName.toLowerCase()+"', '" + accPass +"' , false);")){
+                    retVal = 4;
+                }else{
+                    AccountFileDAO.nextId++;
                 }
             }
-            ress.getStatement().getConnection().close();
+            if(ress!=null){
+                ress.getStatement().getConnection().close();
+            }
             return retVal;
             
         }catch (Exception e) {
@@ -135,11 +138,9 @@ public class AccountFileDAO implements AccountDAO {
                 }else{
                     if(!ress.getString("accName").equals(accName)){
                         retVal = retVal && comm.setQuery(("UPDATE accounts SET accName = '" + accName.toLowerCase() + "' WHERE accId = '" + accID+"';"));
-                        System.out.println("First Result : "+ retVal);
                     }
                     if(!ress.getString("accPass").equals(accPass)){
                         retVal = retVal && comm.setQuery(("UPDATE accounts SET accPass = '" + accPass + "' WHERE accId = '" + accID+"';"));
-                        System.out.println("Second Result : "+ retVal);
                     } 
                 }
                 ress.getStatement().getConnection().close();

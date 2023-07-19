@@ -1,1 +1,23 @@
-<p>acc-page works!</p>
+<body>
+    <div class="container" style="min-height: 550px;">
+        <form class="form" id="login">
+            <h1 class="form_title">Edit Account</h1>
+            <div id = "error_Message" class="error_Message">{{errMsg}}</div>
+            <div class="form_input-group">
+                <input #name type="UserName" class="form_input" autofocus placeholder="Enter New Name">
+            </div>
+            <div class="form_input-group">
+                <input #password type="Password" class="form_input" autofocus placeholder="Type New Password">
+            </div>
+
+            <div class="form_input-group">
+                <input #passwordAgain type="Password" class="form_input" autofocus placeholder="Repeat New Password">
+            </div>
+            <br>
+            <button class="del_button" type="button" (click)="logout(true)">Log-Out</button>
+            <button class="form_button" type="button" (click)="submitUpdateName(name.value)">Update Name</button>
+            <button class="form_button" type="button" (click)="submitUpdatePass(password.value,passwordAgain.value)">Update PassWord</button>
+            <button class="del_button" style=" background-color: var(--color-del-button);"type="button" (click)="submitDelForm()">Delete Account</button>
+        </form>
+    </div>
+</body>

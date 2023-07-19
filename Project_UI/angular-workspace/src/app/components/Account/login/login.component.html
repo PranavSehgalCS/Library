@@ -1,1 +1,19 @@
-<p>login works!</p>
+<body>
+    <div class="container">
+        <form class="form" id="login">
+            <h1 class="form_title">Login to Library</h1>
+            <div id = "error_Message" class="form_message error_Message">{{errMsg}}</div>
+            <div class="form_input-group">
+                <input #userName type="Username" class="form_input" autofocus placeholder="Username">
+            </div>
+
+            <div class="form_input-group">
+                <input #password type="Password" class="form_input" placeholder="Password">
+            </div>
+            <button class="form_button" type="button" (click)="submitLoginForm(userName.value,password.value)">Continue</button>
+            <p class="form_text">
+                <a routerLink="/signup" href = "/signup" class="form_link">Don't have an account? Create one</a>
+            </p>
+        </form>
+    </div>
+</body>

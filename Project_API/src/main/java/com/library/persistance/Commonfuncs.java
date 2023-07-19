@@ -26,7 +26,7 @@ public class Commonfuncs {
         }
         return retVal;
     }
-    public Boolean setQuery(String query){
+    public Boolean setQuery(String query)throws RuntimeException{
         try{
             Connection conn = DriverManager.getConnection(dataBase,dataUser,dataPass); 
             Statement stat = conn.createStatement();
@@ -36,7 +36,7 @@ public class Commonfuncs {
             return true;
         }catch(Exception e){
             System.out.println("\nERROR at setQuery(Commonfuncs) --> " +  e);
-            return false;
+            throw new RuntimeException();
         }
     }
 }

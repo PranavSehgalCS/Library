@@ -56,12 +56,7 @@ public class AccountController {
         LOG.info("\nPOST /Account/" + accName );
         try{
             int responseVal = accountDao.createAccount(accName,accPass);
-            if(responseVal==0){
-                return new ResponseEntity<Integer>(responseVal, HttpStatus.CREATED);
-            }
-            else{
-                return new ResponseEntity<Integer>(responseVal, HttpStatus.CONFLICT);
-            }
+            return new ResponseEntity<Integer>(responseVal, HttpStatus.CREATED);
         }
         catch(Exception e){
             LOG.log(Level.SEVERE,e.getLocalizedMessage());

@@ -2,30 +2,64 @@ import { Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Account } from '../model/Account';
 import { catchError, tap } from 'rxjs/operators';
+import { setCookie, getCookie, removeCookie } from 'typescript-cookie';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccountService {
+  private currAccount: Account = new Account(0,"","",false);
   private accURL:string = 'http://localhost:8080/accounts';
-  constructor(private http: HttpClient) { }
+  constructor(  private http: HttpClient) { }
+
+  isLoggedIn():boolean{
+    this.currAccount.accId = Number(getCookie('accId'));
+    if(this.currAccount.accId>4){
+      this.currAccount.accName = String(getCookie('accName'));
+      this.currAccount.accPass = String(getCookie('accPass'));
+      if(this.currAccount.accName == "" || this.currAccount.accPass == ""){
+        return false;
+      }
+      this.currAccount.isAdmin = Boolean(getCookie('isAdmin'));
+
+      return true;
+    }else{
+      return false;
+    }
+  }
+  getLoggedAccount(){
+    return this.currAccount;
+  }
+  setAccount(acc:Account):void{
+    this.currAccount = acc;
+    var properties = {expires: 0.2, path:'/'};
+    setCookie('accId', String(acc.accId), properties);
+    setCookie('accName', acc.accName, properties);
+    setCookie('accPass', acc.accPass, properties);
+    setCookie('isAdmin', acc.isAdmin, properties);
+  }
+
+  logout():void{
+    removeCookie('accId');
+    removeCookie('accName');
+    removeCookie('accPass');
+    setCookie('isAdmin', 'false');
+  }
 
   hashPass(pwd:string): string{
-    var shift:number = pwd.length;
-    var retVal:string = "";
-    for (let i = 0; i<pwd.length; i++) {
-      retVal =  String.fromCharCode(pwd.charCodeAt(i)+shift/2) 
-                + retVal +
-                String.fromCharCode(pwd.charCodeAt(i)+shift);
-      shift+=(i+pwd.charCodeAt(i)/3);
-    }
-    for (let i = 0; i<retVal.length; i++) {
-      if(retVal.charAt(i) == "'"){
-        retVal = retVal.substring(0,i)+"%"+retVal.substring(i,retVal.length);
+    var retVal:string = "#0xp";
+    var shift:number = 0;
+    var addC:string= ' ';
+    for (let i = 0; i<pwd.length; i++){
+      addC = String.fromCharCode(pwd.charCodeAt(i)+shift);
+      if(addC == "'" || addC=='"'){
+        addC = 'X';
       }
+      retVal = retVal + addC;
+      shift++;
     }
-    return ("#0xp"+retVal)+"@pass";
+    return (retVal+"@pass");
   }
 
   delay(ms: number){
@@ -34,20 +68,21 @@ export class AccountService {
 
   getAccount(accName:string, accPass:string): Observable<Account> {
     let Params = new HttpParams().append("accName",String(accName))
-                                  .append("accPass", this.hashPass(accPass));
+                                  .append("accPass", accPass);
     return this.http.request<Account>("GET",this.accURL,{responseType:"json", params:Params}); 
   }
 
   addAccount(account: Account): Observable<number> {
-    let Params = new  HttpParams().append("accName",String(account.accName))
-                                  .append("accPass", this.hashPass(account.accPass)); 
+    let Params = new  HttpParams().append("accName",account.accName)
+                                  .append("accPass", account.accPass); 
     return this.http.request<number>("POST",this.accURL,{responseType:"json", params:Params});
   }
 
-  updateAccount(account: Account){
-    let Params = new  HttpParams().append("accName",String(account.accName))
+  updateAccount(account: Account):Observable<Boolean>{
+    let Params = new  HttpParams().append("accId",String(account.accId))
+                                  .append("accName",account.accName)
                                   .append("accPass", account.accPass); 
-    return this.http.request<Account>("PUT",this.accURL,{responseType:"json", params:Params});
+    return this.http.request<Boolean>("PUT",this.accURL,{responseType:"json", params:Params});
   }
 
   deleteAccount(acc:Account): boolean{
