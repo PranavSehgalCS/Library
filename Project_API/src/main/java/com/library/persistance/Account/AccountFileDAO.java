@@ -26,7 +26,7 @@ public class AccountFileDAO implements AccountDAO {
     private boolean setNextId(){
         try {
             boolean retVal = false;
-            ResultSet ress = this.comm.getResult("SELECT MAX(accId) AS maid FROM accounts ");
+            ResultSet ress = this.comm.getQuery("SELECT MAX(accId) AS maid FROM accounts ");
             if(ress.next()){
                 AccountFileDAO.nextId = (Integer)(ress.getInt("maid") + 1);
                 if(AccountFileDAO.nextId>5){
@@ -52,7 +52,7 @@ public class AccountFileDAO implements AccountDAO {
     public Account getAccount(String accName, String accPass){
         try {
             Account retval = null;
-            ResultSet ress = comm.getResult("SELECT * FROM accounts WHERE accName = "+comm.qot(accName.toLowerCase())+";");
+            ResultSet ress = comm.getQuery("SELECT * FROM accounts WHERE accName = "+comm.qot(accName.toLowerCase())+";");
             if(ress==null){
                 retval = new Account(2, "", "", false);
             }else{
@@ -90,7 +90,7 @@ public class AccountFileDAO implements AccountDAO {
         try {
             retVal = 0;
             accName =accName.toLowerCase();
-            ResultSet ress = comm.getResult("SELECT accId FROM accounts WHERE accName = '" + accName.toLowerCase() +"';");
+            ResultSet ress = comm.getQuery("SELECT accId FROM accounts WHERE accName = '" + accName.toLowerCase() +"';");
             if(ress == null){
                 retVal = 2;
             }else if(ress.next()){
@@ -127,7 +127,7 @@ public class AccountFileDAO implements AccountDAO {
     public boolean updateAccount(int accID, String accName, String accPass) {
         try {
             boolean retVal = true;
-            ResultSet ress = comm.getResult("SELECT * FROM accounts WHERE accId = "+accID+";");
+            ResultSet ress = comm.getQuery("SELECT * FROM accounts WHERE accId = "+accID+";");
             if(ress==null){
                 retVal = false;
                 System.out.println("T'was null");
@@ -157,7 +157,7 @@ public class AccountFileDAO implements AccountDAO {
     public boolean deleteAccount(int accID, String accPass) {
         try {
             boolean retVal = true;
-            ResultSet ress = comm.getResult("SELECT accId FROM accounts WHERE accId = "+accID+" AND accPass = '"+accPass+"';");
+            ResultSet ress = comm.getQuery("SELECT accId FROM accounts WHERE accId = "+accID+" AND accPass = '"+accPass+"';");
             if(ress == null){
                 retVal = false;
             }else{

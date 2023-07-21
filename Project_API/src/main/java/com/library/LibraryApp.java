@@ -13,7 +13,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class LibraryApp {
-	public static void main(String[] args) {
-		SpringApplication.run(LibraryApp.class, args);
+	public static void main(String[] args){
+		try {
+			SpringApplication.run(LibraryApp.class, args);	
+		} catch (Exception e) {
+			System.out.println("ERROR at main! LEVEL SEVERE, PLEASE HELP!\n");
+			SpringApplication.run(LibraryApp.class, args);
+		}
 	}
 }

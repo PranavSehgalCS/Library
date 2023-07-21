@@ -16,15 +16,25 @@ public class Commonfuncs {
         Commonfuncs.dataUser = dataUser;
     }
     public String qot(String In){
+        String q = ""+'"';
+        String r = "'";
+        In.replaceAll(q, "");
+        In.replaceAll(r, "");
         return ("'"+In+"'");
     }
-    public ResultSet getResult(String query) throws SQLException{
-        Statement stat =  DriverManager.getConnection(dataBase,dataUser,dataPass).createStatement();
-        ResultSet retVal = stat.executeQuery(query);
-        if(retVal == null){
-            stat.getConnection().close();
+    public ResultSet getQuery(String query) throws SQLException{
+        try {
+            Statement stat =  DriverManager.getConnection(dataBase,dataUser,dataPass).createStatement();
+            ResultSet retVal = stat.executeQuery(query);
+            if(retVal == null){
+                stat.getConnection().close();
+            }
+            return retVal;
+        } catch (Exception e) {
+            System.out.println("\n\nTRIGGER COMMAND : "+query); 
+            System.out.println("\nERROR at getQuery(Commonfuncs) --> " +  e);
+            throw new RuntimeException();
         }
-        return retVal;
     }
     public Boolean setQuery(String query)throws RuntimeException{
         try{
@@ -35,6 +45,7 @@ public class Commonfuncs {
             conn.close();
             return true;
         }catch(Exception e){
+            System.out.println("\n\nTRIGGER COMMAND : "+query); 
             System.out.println("\nERROR at setQuery(Commonfuncs) --> " +  e);
             throw new RuntimeException();
         }
