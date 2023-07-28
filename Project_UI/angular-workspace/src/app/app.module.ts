@@ -18,7 +18,12 @@ import { SignupComponent } from './components/Account/signup/signup.component';
 import { LoginComponent } from './components/Account/login/login.component';
 import { AccPageComponent } from './components/Account/acc-page/acc-page.component';
 import { NavbarComponent } from './components/Nav_and_Dash/navbar/navbar.component';
-import { DashboardComponent } from './components/Nav_and_Dash/dashboard/dashboard.component'; 
+import { DashboardComponent } from './components/Nav_and_Dash/dashboard/dashboard.component';
+
+import { CreateBookComponent } from './components/Book/create-book/create-book.component';
+import { EditBookComponent } from './components/Book/edit-book/edit-book.component';
+import { ViewBookComponent } from './components/Book/view-book/view-book.component';
+import { BorrowComponent } from './components/Book/borrow/borrow.component'; 
 
 @NgModule({
   declarations: [
@@ -28,6 +33,10 @@ import { DashboardComponent } from './components/Nav_and_Dash/dashboard/dashboar
     AccPageComponent,
     NavbarComponent,
     DashboardComponent,
+    CreateBookComponent,
+    EditBookComponent,
+    ViewBookComponent,
+    BorrowComponent,
     ],
   imports: [
     BrowserModule,
@@ -41,5 +50,5 @@ import { DashboardComponent } from './components/Nav_and_Dash/dashboard/dashboar
 })
 
 export class AppModule {
-
+  
 }

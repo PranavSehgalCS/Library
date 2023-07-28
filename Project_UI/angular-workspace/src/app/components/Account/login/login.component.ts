@@ -1,7 +1,6 @@
 import { Router } from '@angular/router';
 import { Component } from '@angular/core';
-import {Title} from "@angular/platform-browser";
-
+import {Title} from '@angular/platform-browser';
 import { Account } from 'src/app/model/Account';
 import { AccountService } from 'src/app/services/account.service';
 @Component({
@@ -13,9 +12,9 @@ export class LoginComponent {
   public errMsg:String ="";
   public gotAccount: Account = new Account(-1,'','',false);
   constructor(
-    private router:Router, 
+    private router:Router,
     private titleService:Title,
-    private accountService: AccountService 
+    private accountService: AccountService
   ){
     if(accountService.isLoggedIn()){
       this.router.navigate(['/dashboard']);
@@ -44,7 +43,7 @@ export class LoginComponent {
       });
       for(var i = 0; i<60;i++){
         if(this.gotAccount?.accId == -1){
-          await this.accountService.delay(50);
+          await this.accountService.delay(25);
         }else{
           break;
         }

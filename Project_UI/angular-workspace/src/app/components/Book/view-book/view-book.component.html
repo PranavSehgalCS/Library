@@ -1,0 +1,47 @@
+<!--///////////////////////////////////////////////////////////////////////////////////////////////////////
+    FILE  : view-book.component.html
+    AUTHOR : Pranav Sehgal
+////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+
+<body *ngIf="reload">
+    <div style="width: 100%;">
+        <!--     TITLE BAR     TITLE BAR     TITLE BAR     TITLE BAR     TITLE BAR-->
+        <div class="ptitle">
+           {{bookArray.length}} Books Exist  <div *ngIf="isAdmin" class = "plus" (click)="this.router.navigate(['books/create'])"> + </div> 
+        </div>
+
+        <!--     FILTER     FILTER     FILTER     FILTER     FILTER     FILTER     FILTER-->
+        <div class = "filter" >
+            <br>
+            <input #bookAuth  class="form_input" placeholder="Author" autofocus>
+            <input #minAge type="number" value="0" min="0" class="form_input" placeholder="Minimun age">
+            <input #maxAge type="number" value="100" max="100" class="form_input" placeholder="Maximum age">
+            <select #selectedTag class = "form_input">
+                <option value = "null">?</option>
+                <option  *ngFor="let tagged of tagArray" value="{{tagged}}">  
+                    {{tagged}}   
+                </option>
+            </select>
+            <br><br>
+            <button (click)="filter(bookAuth.value, minAge.valueAsNumber, maxAge.valueAsNumber, selectedTag.value)">FILTER BOOK</button>
+            <button (click)="clear()" style="margin-left: 4%;">Clear Filters</button>
+        </div>
+
+        <!--     BOOKSHELF     BOOKSHELF     BOOKSHELF     BOOKSHELF     BOOKSHELF-->
+        <div class = "bookshelf">
+            <div *ngFor="let book of bookArray" >
+                <div class="book">
+                    <h1>{{book.bookName}}</h1>
+                    <h2>by</h2>
+                    <h1>{{book.bookAuth}}</h1>
+                    <br>
+                    <div style = "font-size: large; margin: 15px;">For ages {{book.ageRange[0]}} to {{book.ageRange[1]}}</div>
+                    <div *ngFor="let tag of book.bookTags" style="display:inline-flex">
+                        <div class="tags">{{tag}}</div>
+                    </div>
+                </div>
+                <div class = "borrow" (click)="this.router.navigate(['books/borrow'],{queryParams:{bookId:book.bookId}})">Borrow Book</div>
+            </div>  
+        </div>
+    </div>
+</body>

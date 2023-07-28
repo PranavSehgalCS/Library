@@ -1,22 +1,25 @@
+<!--///////////////////////////////////////////////////////////////////////////////////////////////////////
+    FILE  : navbar.component.html
+    AUTHOR : Pranav Sehgal
+////////////////////////////////////////////////////////////////////////////////////////////////////////-->
 <body style="max-height: 60px;">
-
+<!-- If Logged In-->
     <div  *ngIf="this.logged()" class = "navbar_container">
-        <div>
-            
-        </div>
-        <div   *ngIf="this.isAdmin()" (click)="this.move_to('adminDashboard')" class = "navbar_component">
-            Admin Dashboard
-        </div>
-        <div   *ngIf="!this.isAdmin()" (click)="this.move_to('adminDashboard')" class = "navbar_component">
+        <!--COMMON Views -->
+        <div    (click)="this.move_to('dashboard')" class = "navbar_component">
             Dashboard
         </div>
 
+        <div (click)="this.move_to('books/view')" class = "navbar_component">
+            Books
+        </div>
+        
         <div (click)="this.log_out()" class = "navbar_component" style="float: right;">
             Logout</div>
         <div (click)="this.move_to('accPage')" class = "navbar_component" style="float: right;">
             Account Page</div>
     </div>
-
+<!-- If Logged In-->
     <div *ngIf="!this.logged()"  class = "navbar_container">
         <div (click)="this.move_to('login')" class = "navbar_component" style="float: right; background-color: greenyellow;">
             Login

@@ -29,9 +29,9 @@ export class AccountService {
     }
   }
   isAdmin():boolean{
-
     return (getCookie('isAdmin')=='true');
   }
+  
   getLoggedAccount(){
     return this.currAccount;
   }

@@ -1,0 +1,104 @@
+body{
+    --color-sand: #ffb356;
+    --color-book: #a4bffa;
+    --color-mypurple: #da89f8;
+    --color-purple: #faa741;
+    --color-tag:rgb(153, 255, 153);
+    display:flex;
+    margin-top: 5%;
+    text-align: center;
+    align-content: center;
+    justify-content: space-around;
+    background-color: var(--color-sand);
+}
+
+.ptitle{
+    width:25%;
+    font-size: 40px;
+    color: aliceblue;
+    display: inline-flex;
+    font-family: “Comic Sans MS”, “Comic Sans”, cursive;
+}
+.plus{ 
+    padding-left:25px;
+    padding-right:25px;
+    margin-left: 25px;
+    border-radius: 32px;
+    background-color: #f69c2e;}
+.plus:hover{
+    padding-left:30px;
+    padding-right:30px;
+    font-size: 50px;
+    transition-duration: 0.25s;
+    background-color: #fb9820;}
+h1{
+    margin:2px ;
+    padding: none;
+    font-family: “Comic Sans MS”, “Comic Sans”, cursive;
+}
+h2{
+    margin:7px ; 
+}
+
+.filter{
+    width:80%;
+    height:10%;
+    margin-top: 50px;
+    margin-left:10%;
+    background-color: var(--color-mypurple);
+}
+.form_input{
+    margin:2%;
+    height:30%;
+    margin-top: 0;
+}
+.book{
+    padding: 2%;
+    padding-top:5%;
+    font-size: 14px;
+    margin-left: 5px;
+    margin-right: 20px;
+    margin-bottom: 10px;
+    padding-bottom:10%;
+    border-radius: 16px;
+    min-height: 250px;
+    cursor: pointer;
+    background-color: var(--color-book);
+}
+.tags{
+    margin: 5px;
+    border-radius: 16px;
+    padding:5px;
+    font-size: 16px;
+    background-color: var(--color-tag);
+}
+.borrow{
+    font-size: 25px;
+    margin-top: 20px;
+    margin-left: 10px;
+    width:90%;
+    padding-top: 2%;
+    padding-bottom: 2%;
+    border-radius: 5px;
+    margin-bottom: 75px;
+    cursor: pointer;
+    background-color: #ff6f89;
+}
+.borrow:hover{
+    padding-top: 5%;
+    padding-bottom: 5%;
+    transition-duration: 0.2s;
+    background-color: #e84f6b; 
+}
+.bookshelf{
+    width:80%;
+    display: grid;
+    grid-gap: 10px;
+    margin-top: 5%;
+    margin-left: 5%;
+    padding: 3%;
+    border-radius: 32px;
+    border: solid black 2px;
+    grid-template-columns: repeat(4, 3fr); 
+    background-color: var(--color-purple);
+}

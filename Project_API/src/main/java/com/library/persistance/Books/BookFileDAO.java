@@ -82,16 +82,18 @@ public class BookFileDAO implements BookDAO{
             throw new RuntimeException();
         } 
     }
-    private boolean matchTag(String[] a, String[] b){
-        if(a==null || b==null){
+    private boolean matchTag(String a, String[] b){
+        if(a.equals("null")){
+            return true;
+        }else if(b==null){
             return false;
-        }else if(a.length==0 || b.length==0){
+        }else if(b.length==0){
             return false;
         }
-        Map<String,Integer> mapper = new HashMap<String,Integer>();
-        for(String i:a){ mapper.put(i, 0); }
         for(String i:b){
-            if(mapper.containsKey(i)){ return true; }
+            if(i.equals(a)){
+                return true;
+            }
         }
         return false;
     }
@@ -130,11 +132,12 @@ public class BookFileDAO implements BookDAO{
     @Override
     public Book[] getBooksByFilter(String auth, int[] ageR, String[] bookTags) throws RuntimeException {
         try{
+            System.out.println("FILTERS : (Author = "+auth+"),  (minAge = "+ageR[0]+")  maxAge("+ageR[1]+") (Tag = "+bookTags[0]+")");
             Book mapObj;
             ArrayList<Book> arr = new ArrayList<Book>();
             for(int i: BookHolder.keySet()){
                 mapObj = BookHolder.get(i);
-                if(matchTag(bookTags, mapObj.getBookTags())||bookTags.length==0){
+                if(matchTag(bookTags[0], mapObj.getBookTags())||bookTags.length==0){
                     if(auth.equals("null") || auth.equals(mapObj.getBookAuth())){
                         if(ageR == null || (ageR[0]<=mapObj.getAgeRange()[0] && ageR[1]>=mapObj.getAgeRange()[1])){
                             arr.add(mapObj);
@@ -142,15 +145,15 @@ public class BookFileDAO implements BookDAO{
                     }
                 }
             }
+            System.out.println("Filter Triggered With Array of Size : " + arr.size());
             if(arr.size()==0){
-                return null;
-            }else{
-                Book[] retVal = new Book[arr.size()];
-                for(int i =0; i<arr.size();i++){
-                    retVal[i]=arr.get(i);
-                }
-                return retVal;
+                arr.add(new Book(-1, auth, auth, ageR, bookTags));;
             }
+            Book[] retVal = new Book[arr.size()];
+            for(int i =0; i<arr.size();i++){
+                retVal[i]=arr.get(i);
+            }
+            return retVal;
         }catch(Exception e){
             System.out.println("\nERROR at getBookByFilter(BookFileDAO) --> " + e);
             throw new RuntimeException();

@@ -12,6 +12,10 @@ import { LoginComponent } from './components/Account/login/login.component';
 import { SignupComponent } from './components/Account/signup/signup.component';
 import { AccPageComponent } from './components/Account/acc-page/acc-page.component';
 
+import { EditBookComponent } from './components/Book/edit-book/edit-book.component';
+import { ViewBookComponent } from './components/Book/view-book/view-book.component';
+import { CreateBookComponent } from './components/Book/create-book/create-book.component';
+import { BorrowComponent } from './components/Book/borrow/borrow.component';
 import { DashboardComponent } from './components/Nav_and_Dash/dashboard/dashboard.component';
 const routes: Routes = [
   
@@ -19,6 +23,12 @@ const routes: Routes = [
   { path:'login', component:LoginComponent },
   { path:'signup', component:SignupComponent },
   { path:'accPage', component:AccPageComponent},
+
+  { path:'books/view', component:ViewBookComponent},
+  { path:'books/edit', component:EditBookComponent},
+  { path:'books/borrow', component:BorrowComponent},
+  { path:'books/create', component:CreateBookComponent},
+  
   { path:'dashboard', component:DashboardComponent}
 
 ];

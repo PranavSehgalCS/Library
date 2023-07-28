@@ -57,8 +57,13 @@ public class BookController {
         try {
             Book[] responseVal = bookDao.getBooksByFilter(bookAuth, ageRange, bookTags);
             if(responseVal==null){
-                return new ResponseEntity<Book[]>(new Book[0],HttpStatus.NOT_FOUND);
+                System.out.println("SENDING NULL :(");
+                Book retBook = new Book(0, "NULL", "NULL", ageRange, bookTags);
+                Book[] retVal = new Book[1];
+                retVal[0] = retBook;
+                return new ResponseEntity<Book[]>(retVal ,HttpStatus.NOT_FOUND);
             }else{
+                System.out.println("SENDING ARRAY of Size "+responseVal.length+ ":(");
                 return new ResponseEntity<Book[]>(responseVal,HttpStatus.OK);
             }
         } catch (Exception e) {
