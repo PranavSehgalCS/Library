@@ -2,9 +2,7 @@
 //  FILE : Books.ts
 //  AUTHOR : Pranav Sehgal
 //           +Auto-generated on ng generate service 
-//  DESCRIPTION: Is a template ts service with constructor to encapsulate data 
-//               USE this as a template to create your own ts service that can communicate with backend
-//               TO CREATE new service, use : ng generate service <service name>
+//  DESCRIPTION: Is a service with constructor to encapsulate data and communicate with backend
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 import { Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';

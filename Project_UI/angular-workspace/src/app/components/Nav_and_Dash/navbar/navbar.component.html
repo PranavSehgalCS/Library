@@ -13,7 +13,11 @@
         <div (click)="this.move_to('books/view')" class = "navbar_component">
             Books
         </div>
-        
+
+        <div *ngIf="isAdmin" (click)="this.move_to('tags/view')" class = "navbar_component">
+            Tags
+        </div>
+
         <div (click)="this.log_out()" class = "navbar_component" style="float: right;">
             Logout</div>
         <div (click)="this.move_to('accPage')" class = "navbar_component" style="float: right;">

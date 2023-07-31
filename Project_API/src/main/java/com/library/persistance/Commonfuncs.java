@@ -22,6 +22,7 @@ public class Commonfuncs {
         In.replaceAll(r, "");
         return ("'"+In+"'");
     }
+
     public ResultSet getQuery(String query) throws SQLException{
         try {
             Statement stat =  DriverManager.getConnection(dataBase,dataUser,dataPass).createStatement();

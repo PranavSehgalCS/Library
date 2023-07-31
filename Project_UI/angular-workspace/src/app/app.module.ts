@@ -23,7 +23,10 @@ import { DashboardComponent } from './components/Nav_and_Dash/dashboard/dashboar
 import { CreateBookComponent } from './components/Book/create-book/create-book.component';
 import { EditBookComponent } from './components/Book/edit-book/edit-book.component';
 import { ViewBookComponent } from './components/Book/view-book/view-book.component';
-import { BorrowComponent } from './components/Book/borrow/borrow.component'; 
+import { BorrowComponent } from './components/Book/borrow/borrow.component';
+import { CreateTagComponent } from './components/Tag/create-tag/create-tag.component';
+import { ViewTagComponent } from './components/Tag/view-tag/view-tag.component';
+import { UpdateTagComponent } from './components/Tag/update-tag/update-tag.component'; 
 
 @NgModule({
   declarations: [
@@ -37,6 +40,9 @@ import { BorrowComponent } from './components/Book/borrow/borrow.component';
     EditBookComponent,
     ViewBookComponent,
     BorrowComponent,
+    CreateTagComponent,
+    ViewTagComponent,
+    UpdateTagComponent,
     ],
   imports: [
     BrowserModule,
