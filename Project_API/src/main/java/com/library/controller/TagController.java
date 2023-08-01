@@ -28,7 +28,7 @@ import com.library.persistance.Tag.TagDAO;
 @RequestMapping("tags")
 public class TagController {
     private TagDAO tagDAO;
-    private static final Logger LOG = Logger.getLogger(TemplateController.class.getName());
+    private static final Logger LOG = Logger.getLogger(TagController.class.getName());
     public TagController(TagDAO tagDao) {
         this.tagDAO = tagDao;
     }
@@ -46,8 +46,8 @@ public class TagController {
     }
 
     @PostMapping("")
-    public ResponseEntity<Boolean> createTemplate(  @RequestParam(name = "tagName", required = true) String tagName ){
-        LOG.info("\nPOST /template/" + tagName );
+    public ResponseEntity<Boolean> createTag(  @RequestParam(name = "tagName", required = true) String tagName ){
+        LOG.info("\nPOST /tag/" + tagName );
         try{
             Boolean responseVal = tagDAO.createTag(tagName);
             if(responseVal){
@@ -64,10 +64,10 @@ public class TagController {
     }
     
     @PutMapping("")
-    public ResponseEntity<Boolean> updateTemplate(  @RequestParam(name = "tagId", required = true) Integer tagId,
+    public ResponseEntity<Boolean> updateTag(  @RequestParam(name = "tagId", required = true) Integer tagId,
                                                     @RequestParam(name = "tagName", required = true) String  tagName 
                                                 ){
-        LOG.info("\nPUT /template/" + tagId + ":" + tagName);
+        LOG.info("\nPUT /tag/" + tagId + ":" + tagName);
         try{
             Boolean reponseVal =  tagDAO.updateTag(tagId, tagName);
             if(reponseVal){
@@ -84,8 +84,8 @@ public class TagController {
     }
 
     @DeleteMapping("")
-    public ResponseEntity<Boolean> deleteTemplate(  @RequestParam(name = "tagId", required = true) Integer tagId ){
-        LOG.info("\nDELETE /template/" + tagId);
+    public ResponseEntity<Boolean> deleteTag(  @RequestParam(name = "tagId", required = true) Integer tagId ){
+        LOG.info("\nDELETE /tag/" + tagId);
         try {
             Boolean reponseVal =  tagDAO.deleteTag(tagId);
             if(reponseVal){

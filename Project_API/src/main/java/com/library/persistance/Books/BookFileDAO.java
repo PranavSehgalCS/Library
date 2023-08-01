@@ -21,28 +21,28 @@ import org.springframework.beans.factory.annotation.Value;
 
 @Component
 public class BookFileDAO implements BookDAO{
-    private int nextID;
-    private Commonfuncs comm;
+    private static int nextID;
+    private static Commonfuncs comm;
     private Boolean updated = false;
-    private Map<Integer, Book> BookHolder;
+    private static Map<Integer, Book> BookHolder;
 
     public BookFileDAO( @Value("${spring.datasource.url}") String database,
                         @Value("${spring.datasource.username}") String datauser,
                         @Value("${spring.datasource.password}") String datapass){
         try {
-            this.BookHolder = new HashMap<Integer, Book>();
-            this.comm = new Commonfuncs(database, datauser, datapass);
+            BookFileDAO.BookHolder = new HashMap<Integer, Book>();
+            BookFileDAO.comm = new Commonfuncs(database, datauser, datapass);
             this.updated = loadBooks();
         } catch (Exception e) {
             System.out.println("\nERROR While Initializing Connection --> " + e);
         }
         
     }
-    private boolean loadBooks() throws RuntimeException{
+    public static boolean loadBooks() throws RuntimeException{
         try {
-            this.BookHolder.clear();
+            BookHolder.clear();
             Book mapObj = new Book(0, null, null, null, null);
-            ResultSet load = this.comm.getQuery("SELECT * FROM books ORDER BY bookid;");
+            ResultSet load = comm.getQuery("SELECT * FROM books ORDER BY bookid;");
             while(load.next()){
                 mapObj = new Book(load.getInt("bookId"),
                                 load.getString("bookName"),
@@ -51,7 +51,7 @@ public class BookFileDAO implements BookDAO{
                                 getTags(load.getInt("bookId")));
                 BookHolder.put(mapObj.getBookId(), mapObj);
             }
-            this.nextID = mapObj.getBookId()+1;
+            nextID = mapObj.getBookId()+1;
             load.getStatement().getConnection().close();
             return true;
         } catch (Exception e) {
@@ -59,9 +59,9 @@ public class BookFileDAO implements BookDAO{
             return false;
         }
     }
-    private String[] getTags(int bookId){
+    private static String[] getTags(int bookId){
         try {
-            ResultSet load = this.comm.getQuery("SELECT tag FROM tags WHERE bookId = " + bookId +";");
+            ResultSet load = BookFileDAO.comm.getQuery("SELECT tag FROM tags WHERE bookId = " + bookId +";");
             ArrayList<String> arr = new ArrayList<String>();
             while(load.next()){
                 arr.add(load.getString("tag"));
@@ -103,9 +103,9 @@ public class BookFileDAO implements BookDAO{
         try {
             if(!updated){ updated = loadBooks(); }
             if(bookId!=-1){
-                if(this.BookHolder.containsKey(bookId)){
+                if(BookFileDAO.BookHolder.containsKey(bookId)){
                     Book[] retVal = new Book[1];
-                    retVal[0] = this.BookHolder.get(bookId);
+                    retVal[0] = BookFileDAO.BookHolder.get(bookId);
                     retVal[0].bookTags = getTags(bookId);
                     return retVal;
                 }else{
@@ -169,11 +169,11 @@ public class BookFileDAO implements BookDAO{
             if(ageRange == null){
                 ageRange = new int[]{0,100};
             }
-            this.comm.setQuery("INSERT INTO books VALUES("+nextID+','+comm.qot(bookName)+','+comm.qot(bookAuth)+c(ageRange)+");");
+            BookFileDAO.comm.setQuery("INSERT INTO books VALUES("+nextID+','+comm.qot(bookName)+','+comm.qot(bookAuth)+c(ageRange)+");");
             for(String i:bookTags){
-                this.comm.setQuery("INSERT INTO tags VALUES("+nextID+","+comm.qot(i)+")");
+                BookFileDAO.comm.setQuery("INSERT INTO tags VALUES("+nextID+","+comm.qot(i)+")");
             }
-            this.BookHolder.put(nextID, new Book(nextID, bookName, bookAuth, ageRange, bookTags));
+            BookFileDAO.BookHolder.put(nextID, new Book(nextID, bookName, bookAuth, ageRange, bookTags));
             
             nextID++;
             return true;
@@ -186,22 +186,22 @@ public class BookFileDAO implements BookDAO{
     @Override
     public boolean updateBook(int bookId, String bookName, String bookAuth, int[] ageRange, String[] bookTags) throws RuntimeException {
         try {
-            if(this.BookHolder.containsKey(bookId)){
+            if(BookFileDAO.BookHolder.containsKey(bookId)){
                 Book mapObj = BookHolder.get(bookId);
                 if(bookName.equals(mapObj.getBookName())){
-                    this.comm.setQuery("UPDATE books SET bookName = '"+bookName+"' WHERE bookId = "+bookId+";");
+                    BookFileDAO.comm.setQuery("UPDATE books SET bookName = '"+bookName+"' WHERE bookId = "+bookId+";");
                 }
                 if(ageRange!=mapObj.getAgeRange()){
-                    this.comm.setQuery("UPDATE books SET minAge = "+ageRange[0]+" WHERE bookId = "+bookId+";");
-                    this.comm.setQuery("UPDATE books SET maxAge = "+ageRange[1]+" WHERE bookId = "+bookId+";");
+                    BookFileDAO.comm.setQuery("UPDATE books SET minAge = "+ageRange[0]+" WHERE bookId = "+bookId+";");
+                    BookFileDAO.comm.setQuery("UPDATE books SET maxAge = "+ageRange[1]+" WHERE bookId = "+bookId+";");
                 }
                 if(!bookAuth.equals(mapObj.getBookAuth())){
-                    this.comm.setQuery("UPDATE books SET bookAuth = '"+ bookAuth +"' WHERE bookId = "+bookId+";");
+                    BookFileDAO.comm.setQuery("UPDATE books SET bookAuth = '"+ bookAuth +"' WHERE bookId = "+bookId+";");
                 }
-                this.comm.setQuery("DELETE FROM tags WHERE"+bookId+";");
+                BookFileDAO.comm.setQuery("DELETE FROM tags WHERE"+bookId+";");
                 for(String i:bookTags){
                     mapObj.bookTags=bookTags;
-                    this.comm.setQuery("INSERT INTO tags VALUES("+bookId+","+comm.qot(i)+")");
+                    BookFileDAO.comm.setQuery("INSERT INTO tags VALUES("+bookId+","+comm.qot(i)+")");
                 }
                 BookHolder.put(bookId, new Book(bookId, bookName, bookAuth, ageRange, bookTags));
                 return true;
@@ -217,8 +217,8 @@ public class BookFileDAO implements BookDAO{
     @Override
     public boolean deleteBook(int bookId) throws RuntimeException {
         if(BookHolder.containsKey(bookId)){
-            boolean retVal = this.comm.setQuery("DELETE FROM books WHERE bookId = "+bookId+";");
-            retVal = retVal && this.comm.setQuery("DELETE FROM tags WHERE bookId = "+bookId+";");
+            boolean retVal = BookFileDAO.comm.setQuery("DELETE FROM books WHERE bookId = "+bookId+";");
+            retVal = retVal && BookFileDAO.comm.setQuery("DELETE FROM tags WHERE bookId = "+bookId+";");
             if(retVal){
                 BookHolder.remove(bookId);
             }

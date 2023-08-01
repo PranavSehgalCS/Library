@@ -3,7 +3,7 @@ package com.library.persistance.Tag;
 import java.util.Map;
 import java.util.HashMap;
 import java.sql.ResultSet;
-
+import com.library.persistance.Books.BookFileDAO;
 import com.library.model.Tag;
 import com.library.persistance.Commonfuncs;
 import org.springframework.stereotype.Component;
@@ -34,7 +34,7 @@ public class TagFileDAO implements TagDAO{
                                     load.getString("tagName"));
                 tagHolder.put(mapObj.getTagId(), mapObj);
             }
-            nextId = mapObj.getTagId();
+            nextId = mapObj.getTagId() + 1;
             load.getStatement().getConnection().close();
         } catch (Exception e) {
             System.out.println("ERROR While setting nextID at (TagFileDAO)--> " + e);
@@ -69,8 +69,15 @@ public class TagFileDAO implements TagDAO{
     @Override
     public boolean deleteTag(int tagId) {
         try {
+            ResultSet load = this.comm.getQuery("SELECT * FROM allTags WHERE tagId = "+tagId+";");
+            load.next();
+            String tagName = load.getString("tagName");
+            load.getStatement().getConnection().close();
+
             this.comm.setQuery("DELETE FROM allTags WHERE tagId = " + tagId + ";");
+            this.comm.setQuery("DELETE FROM tags WHERE tag = '"+tagName+"';");
             this.tagHolder.remove(tagId);
+            BookFileDAO.loadBooks();
             return true;
         } catch (Exception e) {
             System.out.println("ERROR While deleting tag at (TagFileDAO) --> " + e);
@@ -93,7 +100,11 @@ public class TagFileDAO implements TagDAO{
                 }
             }
             nextId++;
-            return this.comm.setQuery("INSERT INTO allTags VALUES("+(nextId-1)+", '"+tagName+"')");
+            if(this.comm.setQuery("INSERT INTO allTags VALUES("+(nextId-1)+", '"+tagName+"')")){
+                this.tagHolder.put(nextId-1, new Tag(nextId-1, tagName));
+                return true;
+            } 
+            return false;
         } catch (Exception e) {
             System.out.println("ERROR While Creating new Tag at (TagFileDAO) --> " + e);
             return false;
@@ -103,7 +114,18 @@ public class TagFileDAO implements TagDAO{
     @Override
     public boolean updateTag(int tagId, String tagName) {
         try {
-            return this.comm.setQuery("UPDATE allTags SET tagName = '"+tagName+"' WHERE tagId = "+tagId+";");
+            ResultSet load = this.comm.getQuery("SELECT * FROM allTags WHERE tagId = "+tagId+";");
+            load.next();
+            String prevName = load.getString("tagName");
+            load.getStatement().getConnection().close();
+            
+            boolean b1 = this.comm.setQuery("UPDATE allTags SET tagName = '"+tagName+"' WHERE tagId = "+tagId+";");
+            b1 = b1 && this.comm.setQuery("UPDATE Tags SET tag = '"+tagName+"' WHERE tag = '"+prevName+"';");
+            if(b1){
+                this.tagHolder.put(tagId, new Tag(tagId,tagName));
+                BookFileDAO.loadBooks();
+            }
+            return b1;
         } catch (Exception e) {
             System.out.println("ERROR While Updating Tag at (TafFileDAO) --> " + e);
             return false;
