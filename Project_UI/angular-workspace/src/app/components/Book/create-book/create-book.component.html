@@ -4,9 +4,34 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////-->
 
 <body>
-    <h1>Create Books Page</h1>
-    <h1>Create Books Page</h1>
-    <h1>Create Books Page</h1>
-    <h1>Create Books Page</h1>
-    
+    <div class="ptitle" style="width:100%;margin-left: 40%; margin-top: 30px;">
+        Create New Book
+    </div>
+    <br><br><br><br>
+    <div class="form_container">
+        <input #bookName class="nb_form_input" placeholder="Book Name  " autofocus ><br>
+        <input #bookAuth class="nb_form_input" placeholder="Book Author"><br>
+        
+        <input #minAge type="number" min="0" max="99" class="mini_form_input" placeholder="Minimum Age">
+        <input #maxAge type="number" min="1" max="100" class="mini_form_input" placeholder="Maximum Age">
+        <br><br><br>
+        <select #tagVal class="selector">
+            <option value="null">?</option>
+            <option *ngFor="let tag of tagArr" value="{{tag.tagId}}">
+                {{tag.tagName}}
+            </option>
+        </select>
+        <button class="addTag" (click)="addTag(toNum(tagVal.value))">Add Tag</button>
+        <br>
+            <div *ngFor="let tag of chosenArr" style="margin-left: 18%;">
+                <div class="tagContainer">
+                    <div (click)="removeTag(tag.tagId)" class="cross">X</div>
+                    <div class="tagName">{{tag.tagName+'     '}}</div>
+                </div><br><br><br>
+            </div>
+
+        <br><br><br>
+        <button class="complete_button" (click)="createBook(bookName.value, bookAuth.value, minAge.valueAsNumber, maxAge.valueAsNumber)"> Create Book </button>
+    </div>
+    <br><br><br><br><br><br><br><br>
 </body>

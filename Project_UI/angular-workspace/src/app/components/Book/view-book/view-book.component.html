@@ -40,7 +40,8 @@
                         <div class="tags">{{tag}}</div>
                     </div>
                 </div>
-                <div class = "borrow" (click)="this.router.navigate(['books/borrow'],{queryParams:{bookId:book.bookId}})">Borrow Book</div>
+                <div *ngIf="!isAdmin" class = "borrow" (click)="this.router.navigate(['books/borrow'],{queryParams:{bookId:book.bookId}})">Borrow Book</div>
+                <div  *ngIf="isAdmin" class = "editow" (click)="this.router.navigate(['books/edit'],{queryParams:{bookId:book.bookId}})">Edit Book</div>
             </div>  
         </div>
     </div>

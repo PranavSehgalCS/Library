@@ -1,5 +1,17 @@
-<body>
-    <div *ngFor="let tag of tagArr" (click)="" class = "tagDisplay">
-        <h1>{{tag.tagId}} : {{tag.tagName}}</h1>
+<!--///////////////////////////////////////////////////////////////////////////////////////////////////////
+    FILE  : view-tag.component.html
+    AUTHOR : Pranav Sehgal
+////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+
+<body *ngIf="reload==true">
+    <div class="ptitle">
+        {{tagArr.length}} Tags Exist  <div class = "plus" (click)="createTag()"> + </div> 
+     </div><br><br><br><br><br><br>
+    <div *ngFor="let tag of tagArr" class = "tagDisplay">
+        <div class="tagName">{{tag.tagName}}</div>
+        <div style="margin-left: auto;">
+            <div class="tagDel" (click)="deleteTag(tag)" > Delete</div>
+            <div class="tagEdit" (click)="editTag(tag)" > Edit</div>
+        </div>  
     </div>
 </body>

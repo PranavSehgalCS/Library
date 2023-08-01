@@ -30,13 +30,13 @@ export class TagService {
     return this.http.post<boolean>(this. tagUrl,null,{params:param});
   }
 
-  updateTemplate(tagId:number, tagName:string): Observable<boolean>{
+  updateTag(tagId:number, tagName:string): Observable<boolean>{
     const param = new HttpParams().append("tagId", tagId)
                                   .append("tagName", tagName);
     return this.http.put<boolean>(this.tagUrl,null,{params:param});
   }
 
-  deleteTemplate(tagId:number): Observable<boolean>{
+  deleteTag(tagId:number): Observable<boolean>{
     const param = new HttpParams().append("tagId", tagId)
     return this.http.delete<boolean>(this.tagUrl,{params:param});
   }

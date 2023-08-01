@@ -18,12 +18,13 @@
             Tags
         </div>
 
-        <div (click)="this.log_out()" class = "navbar_component" style="float: right;">
-            Logout</div>
+        <div (click)="this.log_out()" class = "navbar_component" style="float: right; background-color: rgb(254, 152, 152);">
+            Logout
+        </div>
         <div (click)="this.move_to('accPage')" class = "navbar_component" style="float: right;">
             Account Page</div>
     </div>
-<!-- If Logged In-->
+<!-- If Not Logged In-->
     <div *ngIf="!this.logged()"  class = "navbar_container">
         <div (click)="this.move_to('login')" class = "navbar_component" style="float: right; background-color: greenyellow;">
             Login

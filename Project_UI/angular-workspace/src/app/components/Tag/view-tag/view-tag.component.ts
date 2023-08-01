@@ -9,10 +9,11 @@ import { AccountService } from 'src/app/services/account.service';
   templateUrl: './view-tag.component.html',
   styleUrls: ['../tags.css']
 })
+
 export class ViewTagComponent {
   public tagArr:Tag[] = [];
   public reload:boolean = true;
-  constructor(  private router:Router,
+  constructor(  public router:Router,
                 private tagService:TagService,
                 private accService:AccountService){
     if(!accService.isLoggedIn()){
@@ -30,5 +31,55 @@ export class ViewTagComponent {
         this.tagArr = res;
       }
     });
+  }
+  
+  
+  createTag(){
+    var resVal =  prompt("Enter name of the new Tag : ");
+    if(resVal != null && resVal != undefined){
+      resVal = resVal.trim();
+      if(resVal.length<3){
+        alert("Tag name must be at least 3 characters");
+      }else{
+        this.tagService.createTag(resVal).subscribe( res => {
+          if(res == true){
+              alert("Tag created successfully!");
+              location.reload();
+          }else{
+            alert("ERROR while creating tag!");
+          }
+        });
+      }
+    }
+  }
+  editTag(tag:Tag){
+    var resVal =  prompt("Enter New Name For '"+tag.tagName+"'  :");
+    if(resVal != null && resVal != undefined){
+      resVal = resVal.trim();
+      if(resVal.length<3){
+        alert("Tag name must be at least 3 characters");
+      }else{
+        this.tagService.updateTag(tag.tagId, String(resVal)).subscribe( res => {
+          if(res==true){
+            this.tagArr[this.tagArr.indexOf(tag)] = new Tag(tag.tagId, String(resVal));
+            alert('Tag updated successfully!');
+            this.reload = true;
+          }
+        });
+      }
+    }
+  }
+  deleteTag(tag:Tag){
+    if(confirm("Are you sure you want to delete this tag?")){
+      this.tagService.deleteTag(tag.tagId).subscribe( res => {
+        if(res == true){
+          alert("Tag Deleted Successfully!");
+          delete this.tagArr[this.tagArr.indexOf(tag)];
+          location.reload()
+        }else{
+          alert("ERROR While Deleting tag");
+        }
+      });
+    } 
   }
 }

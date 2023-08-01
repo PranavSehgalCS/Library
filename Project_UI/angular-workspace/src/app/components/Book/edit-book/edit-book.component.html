@@ -2,3 +2,35 @@
     FILE  : edit-book.component.html
     AUTHOR : Pranav Sehgal
 ////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+<body>
+    <div class="ptitle" style="width:100%;margin-left: 40%; margin-top: 30px;">
+        Editing Book of Id {{this.bookId}}
+    </div>
+    <br><br><br><br>
+    <div class="form_container">
+        <input #bookNameH value="{{this.bookName}}" class="nb_form_input" autofocus ><br>
+        <input #bookAuthH value="{{this.bookAuth}}" class="nb_form_input"><br>
+        
+        <input #minAge value="{{this.minVal}}" type="number" min="0" max="99" class="mini_form_input" placeholder="Minimum Age">
+        <input #maxAge value="{{this.maxVal}}" type="number" min="1" max="100" class="mini_form_input" placeholder="Maximum Age">
+        <br><br><br>
+        <select #tagVal class="selector">
+            <option value="null">?</option>
+            <option *ngFor="let tag of tagArr" value="{{tag.tagName}}">
+                {{tag.tagName}}
+            </option>
+        </select>
+        <button class="addTag" (click)="addTag(tagVal.value)">Add Tag</button>
+        <br>
+            <div *ngFor="let tag of chosenArr" style="margin-left: 18%;">
+                <div class="tagContainer">
+                    <div (click)="removeTag(tag)" class="cross">X</div>
+                    <div class="tagName">{{tag+'     '}}</div>
+                </div><br><br><br>
+            </div>
+
+        <br><br><br>
+        <button class="complete_button" (click)="editBook(bookNameH.value, bookAuthH.value, minAge.valueAsNumber, maxAge.valueAsNumber)"> Edit Book </button>
+    </div>
+    <br><br><br><br><br><br><br><br>
+</body>

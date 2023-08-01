@@ -57,7 +57,8 @@ export class BookService {
   }
 
   updateBook(upBook:Book): Observable<boolean>{
-    const param = new HttpParams().append("bookName", upBook.bookName)
+    const param = new HttpParams().append("bookId", upBook.bookId)
+                                  .append("bookName", upBook.bookName)
                                   .append("bookAuth", upBook.bookAuth)
                                   .append("ageRange", String(upBook.ageRange))
                                   .append("bookTags", String(upBook.bookTags));
