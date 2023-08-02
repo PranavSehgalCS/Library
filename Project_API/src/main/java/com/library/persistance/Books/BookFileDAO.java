@@ -198,7 +198,7 @@ public class BookFileDAO implements BookDAO{
                 if(!bookAuth.equals(mapObj.getBookAuth())){
                     BookFileDAO.comm.setQuery("UPDATE books SET bookAuth = '"+ bookAuth +"' WHERE bookId = "+bookId+";");
                 }
-                BookFileDAO.comm.setQuery("DELETE FROM tags WHERE"+bookId+";");
+                BookFileDAO.comm.setQuery("DELETE FROM tags WHERE bookId = "+bookId+";");
                 for(String i:bookTags){
                     mapObj.bookTags=bookTags;
                     BookFileDAO.comm.setQuery("INSERT INTO tags VALUES("+bookId+","+comm.qot(i)+")");

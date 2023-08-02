@@ -1,3 +1,9 @@
+/*///////////////////////////////////////////////////////////////////////////////////////////////////////
+*   FILE  : view-book.component.ts
+*   AUTHOR : Pranav Sehgal
+*   DESCRIPTION : USED as the typescript file for writing functions for viewing book
+///////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
 import { Router } from '@angular/router';
 import { Component } from '@angular/core';
 import { Book } from 'src/app/model/Book';
@@ -74,6 +80,32 @@ export class ViewBookComponent {
           }
         }else{
           this.bookArray=[];
+        }
+      });
+    }
+  }
+  
+  async deleteBooks(book:Book){
+    if(confirm("Are you sure you want to delete the book :\n\n'"+book.bookName+"'")){
+      this.bookService.deleteBook(book.bookId).subscribe( res => {
+        if(res==true){
+          if(this.bookArray.length!=0){
+            if(this.bookArray.length==1){
+              this.bookArray = [];
+            }else{
+              var temp:Book[] = [];
+              for(let b of this.bookArray){
+                if(b.bookId!=book.bookId){
+                  temp.push(b);
+                }
+              }
+              this.bookArray = temp;
+            }
+          }
+
+          alert('Book deleted successfully!')
+        }else{
+          alert('ERROR while deleting book')
         }
       });
     }

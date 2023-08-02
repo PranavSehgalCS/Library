@@ -40,8 +40,14 @@
                         <div class="tags">{{tag}}</div>
                     </div>
                 </div>
+                <div  *ngIf="isAdmin" style="display: flex;margin-left: 30px;">
+                    <div class = "editow" (click)="this.router.navigate(['books/edit'],{queryParams:{bookId:book.bookId}})"> Edit </div>
+                    <div class = "deltow" (click)="deleteBooks(book)"> Delete </div>
+                </div> 
+
                 <div *ngIf="!isAdmin" class = "borrow" (click)="this.router.navigate(['books/borrow'],{queryParams:{bookId:book.bookId}})">Borrow Book</div>
-                <div  *ngIf="isAdmin" class = "editow" (click)="this.router.navigate(['books/edit'],{queryParams:{bookId:book.bookId}})">Edit Book</div>
+                
+                
             </div>  
         </div>
     </div>

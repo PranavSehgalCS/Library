@@ -14,7 +14,7 @@
             Books
         </div>
 
-        <div *ngIf="isAdmin" (click)="this.move_to('tags/view')" class = "navbar_component">
+        <div *ngIf="isAdmin()" (click)="this.move_to('tags/view')" class = "navbar_component">
             Tags
         </div>
 
