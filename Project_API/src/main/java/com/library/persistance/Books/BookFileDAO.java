@@ -132,7 +132,6 @@ public class BookFileDAO implements BookDAO{
     @Override
     public Book[] getBooksByFilter(String auth, int[] ageR, String[] bookTags) throws RuntimeException {
         try{
-            System.out.println("FILTERS : (Author = "+auth+"),  (minAge = "+ageR[0]+")  maxAge("+ageR[1]+") (Tag = "+bookTags[0]+")");
             Book mapObj;
             ArrayList<Book> arr = new ArrayList<Book>();
             for(int i: BookHolder.keySet()){

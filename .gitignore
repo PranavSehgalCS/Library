@@ -1,7 +1,7 @@
 .DS_Store
 .vscode/settings.json
 Project_API/target/
-Project_UI/angular-workspace/.angular/cache/
+Project_UI/angular-workspace/.angular/
 Project_UI/angular-workspace/node_modules/
 Project_UI/angular-workspace/src/app/components/Template/
 Project_UI/angular-workspace/src/app/model/Template.ts

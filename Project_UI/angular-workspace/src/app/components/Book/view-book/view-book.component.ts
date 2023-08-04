@@ -9,22 +9,23 @@ import { Component } from '@angular/core';
 import { Book } from 'src/app/model/Book';
 import { Title } from '@angular/platform-browser';
 import { BookService } from 'src/app/services/book.service';
+import { BorrowService } from 'src/app/services/borrow.service';
 import { AccountService } from 'src/app/services/account.service';
-import { min } from 'rxjs';
 @Component({
   selector: 'app-view-book',
   templateUrl: './view-book.component.html',
   styleUrls: ['../bookStyles.css']
 })
 export class ViewBookComponent {
-  public reload:boolean = true;
-  public isAdmin:boolean = false;
+  
   public tagArray:string[]= [];
   public bookArray:Book[] = [];
-  
+  public reload:boolean = true;
+  public isAdmin:boolean = false;
   constructor(
-    public router:Router,
     private title:Title,
+    public router:Router,
+    private bService: BorrowService,
     private bookService:BookService,
     private accService:AccountService
   ){
@@ -53,6 +54,34 @@ export class ViewBookComponent {
       }});
   }
 
+
+  private DTS(dat:Date):string{
+    var inp = dat.toString();
+    var retVal:string = "";
+    var sl:string[] = inp.split(' ');
+    retVal = sl[1] + ' ';
+    retVal += sl[2] + ' ';
+    retVal += sl[3];
+    return retVal;
+  
+  }
+  async doBorrow(bookId:number, bookName:string){
+    if(confirm("Are you sure you want to borrow the book : \n" + bookName)){
+      var currTime:Date = new Date();
+      var currName:string = this.accService.getAccName();
+      currTime = new Date(currTime.getTime() + 14*24*60*60000);
+      
+      this.bService.createBorrow(currName, this.DTS(currTime),bookId,bookName).subscribe(res => {
+        if(res == true){ 
+          alert("Book has been borrowed successfully, please return it by :\n" +this.DTS(currTime) );
+        }else if(res == false){
+          alert("Book Has Already Been borrowed");
+        }else{
+          alert("Error While Borrowing Book!");  
+        }
+      });
+    }
+  }
   async clear(){
     this.bookService.getBooks(-1).subscribe(res => {
       if(res!= null && res!= undefined){
@@ -83,8 +112,7 @@ export class ViewBookComponent {
         }
       });
     }
-  }
-  
+  } 
   async deleteBooks(book:Book){
     if(confirm("Are you sure you want to delete the book :\n\n'"+book.bookName+"'")){
       this.bookService.deleteBook(book.bookId).subscribe( res => {

@@ -2,3 +2,24 @@
     FILE  : borrow.component.html
     AUTHOR : Pranav Sehgal
 ////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+<body>
+
+    <div *ngIf="isAdmin">
+        <div class="ptitle">{{tagArr.length}} People have borrowed books</div>
+        <div class="line_container"*ngFor="let tag of tagArr">
+            <div class="space"></div>
+            <div class="detail">{{tag.tagName}}</div> has borrowed <div class="detail">{{tag.tagId}}</div> Books
+            <button class="actor" (click)="viewBooks(tag.tagName)"> View Books</button>
+        </div>
+    </div>
+
+<!--////////////////////////////////////////////////////////////////////////////////////////////////////-->
+    <div *ngIf="!isAdmin">
+        <div class="ptitle">You Have {{borrArr.length}} Borrowed Books</div>
+        <div class="line_container" *ngFor="let borr of borrArr">
+            <div class="space"></div>
+            {{borr.bookId}} <div class="detail">{{borr.bookName}}</div><div class="space"></div>  Return by <div class="detail">{{borr.borrDate}}</div>
+            <button class="actor" (click)="retBook(borr.bookId)"> Return Book</button>
+        </div>
+    </div>
+</body>

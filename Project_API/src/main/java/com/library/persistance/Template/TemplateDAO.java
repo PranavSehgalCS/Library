@@ -1,19 +1,12 @@
-///////////////////////////////////////////////////////////////////////////////////////////////////////
 package com.library.persistance.Template;
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////
 //  FILE : TemplateDAO.java
 //  AUTHOR : Pranav Sehgal <PranavSehgalCS>
-//  DESCRIPTION: Is a template DAO.java INTERFACE file, used to DECLARE functions
-//               USE the functins declared here in the CONTROLLER file, 
-//               DEFINE these functions in the FileDAO.java file with @override
-//
+//  DESCRIPTION: Is a DAO.java INTERFACE file, used to DECLARE functions
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 import java.io.IOException;
-
-import org.springframework.stereotype.Repository;
-
 import com.library.model.Template;
-
+import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TemplateDAO{

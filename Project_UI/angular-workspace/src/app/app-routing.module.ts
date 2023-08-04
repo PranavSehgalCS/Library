@@ -19,7 +19,6 @@ import { BorrowComponent } from './components/Book/borrow/borrow.component';
 import { EditBookComponent } from './components/Book/edit-book/edit-book.component';
 import { ViewBookComponent } from './components/Book/view-book/view-book.component';
 import { CreateBookComponent } from './components/Book/create-book/create-book.component';
-import { DashboardComponent } from './components/Nav_and_Dash/dashboard/dashboard.component';
 const routes: Routes = [
   
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -34,7 +33,7 @@ const routes: Routes = [
   { path:'books/borrow', component:BorrowComponent},
   { path:'books/create', component:CreateBookComponent},
   
-  { path:'dashboard', component:DashboardComponent}
+  { path:'dashboard', component:BorrowComponent}
 
 ];
 

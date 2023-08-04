@@ -1,29 +1,20 @@
-///////////////////////////////////////////////////////////////////////////////////////////////////////
 package com.library.persistance.Template;
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////
 //  FILE : TemplateFileDAO.java
 //  AUTHOR : Pranav Sehgal <PranavSehgalCS>
-//  DESCRIPTION: Is a template FileDAO.java file
-//               IMPLEMENTS TemplateDAO interface
-//               DEFINE functions declared in the FileDAO.java file with @override
-//               DECLARE functions and variables not in FileDAO.java as private
-//               DECLARE functions and variables not in FileDAO.java as public static if they need to be
-//                      accessed elsewhere.
-//               VALUES are taken from the src/main//resources/application.properties file
-//
+//  DESCRIPTION: IMPLEMENTS TemplateDAO interface and declares defined functions
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 import java.util.Map;
-import java.util.TreeMap;
+import java.util.HashMap;
 
 import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
-import org.springframework.stereotype.Component;
-
 import com.library.model.Template;
 
+import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Value;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -34,7 +25,7 @@ public class TemplateFileDAO implements TemplateDAO{
     private int nextID;
     private Boolean updated = false; /* DECLARE this as public static if the database table is shared  
                                         and set this as false if that table is updated elsewhere*/
-    private Map<Integer, Template> TemplateHolder = new TreeMap<Integer, Template>();
+    private Map<Integer, Template> TemplateHolder = new HashMap<Integer, Template>();
 
     public TemplateFileDAO( @Value("${spring.datasource.url}") String database,
                             @Value("${spring.datasource.username}") String datauser,

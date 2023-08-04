@@ -18,7 +18,6 @@ import { SignupComponent } from './components/Account/signup/signup.component';
 import { LoginComponent } from './components/Account/login/login.component';
 import { AccPageComponent } from './components/Account/acc-page/acc-page.component';
 import { NavbarComponent } from './components/Nav_and_Dash/navbar/navbar.component';
-import { DashboardComponent } from './components/Nav_and_Dash/dashboard/dashboard.component';
 
 import { CreateBookComponent } from './components/Book/create-book/create-book.component';
 import { EditBookComponent } from './components/Book/edit-book/edit-book.component';
@@ -34,7 +33,6 @@ import { ViewTagComponent } from './components/Tag/view-tag/view-tag.component';
     LoginComponent,
     AccPageComponent,
     NavbarComponent,
-    DashboardComponent,
     CreateBookComponent,
     EditBookComponent,
     ViewBookComponent,

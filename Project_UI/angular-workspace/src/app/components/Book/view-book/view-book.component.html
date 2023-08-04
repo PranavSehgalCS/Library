@@ -45,7 +45,7 @@
                     <div class = "deltow" (click)="deleteBooks(book)"> Delete </div>
                 </div> 
 
-                <div *ngIf="!isAdmin" class = "borrow" (click)="this.router.navigate(['books/borrow'],{queryParams:{bookId:book.bookId}})">Borrow Book</div>
+                <div *ngIf="!isAdmin" class = "borrow" (click)="doBorrow(book.bookId, book.bookName)">Borrow Book</div>
                 
                 
             </div>  

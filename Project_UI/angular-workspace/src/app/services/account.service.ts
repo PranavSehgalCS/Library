@@ -35,6 +35,9 @@ export class AccountService {
   getLoggedAccount(){
     return this.currAccount;
   }
+  getAccName():string{
+    return this.currAccount.accName;
+  }
   setAccount(acc:Account):void{
     this.currAccount = acc;
     var properties = {expires: 0.2, path:'/'};

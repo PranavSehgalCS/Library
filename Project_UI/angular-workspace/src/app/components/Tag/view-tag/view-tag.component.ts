@@ -1,6 +1,7 @@
 import { Tag } from 'src/app/model/Tag';
 import { Router } from '@angular/router';
 import { Component } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { TagService } from 'src/app/services/tag.service';
 import { AccountService } from 'src/app/services/account.service';
 
@@ -13,13 +14,16 @@ import { AccountService } from 'src/app/services/account.service';
 export class ViewTagComponent {
   public tagArr:Tag[] = [];
   public reload:boolean = true;
-  constructor(  public router:Router,
+  constructor(  private title:Title,
+                public router:Router,
                 private tagService:TagService,
                 private accService:AccountService){
     if(!accService.isLoggedIn()){
       router.navigate(['/login']);
     }else if(!accService.isAdmin()){
       router.navigate(['/dashboard']);
+    }else{
+      title.setTitle('Tags');
     }
   }
 

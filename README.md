@@ -1,5 +1,5 @@
 # Library
-    A Library Management System
+    A Library Management System with admin & user interfaces
 
     Backend uses Maven SpringBoot & Java.
     Frontend Uses Angular, TypeScript, HTML, CSS.

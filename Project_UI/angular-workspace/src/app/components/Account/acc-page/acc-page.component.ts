@@ -65,11 +65,9 @@ export class AccPageComponent {
     }else{
       this.errMsg="";
       var upAcc = new Account(this.curAcc.accId, accName,this.curAcc.accPass,false);
-      upAcc.accName = accName;
       await this.accService.updateAccount(upAcc).subscribe(res=>{
         if(res==true){
-          this.curAcc.accName = accName;
-          this.accService.setAccount(this.curAcc);
+          this.accService.setAccount(upAcc);
           alert("UserName Successfully Changed To: "+ accName);
         }else if(res == false){
           alert("Error While Changing UserName!");
