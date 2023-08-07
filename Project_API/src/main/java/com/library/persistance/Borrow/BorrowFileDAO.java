@@ -20,18 +20,18 @@ import org.springframework.beans.factory.annotation.Value;
 
 @Component
 public class BorrowFileDAO implements BorrowDAO{
-    private Commonfuncs comm;
-    private ArrayList<Tag> borrowers = new ArrayList<Tag>();
-    private Map<String,ArrayList<Borrow>> BorrHolder = new HashMap<String,ArrayList<Borrow>>();
+    private static Commonfuncs comm;
+    private static ArrayList<Tag> borrowers = new ArrayList<Tag>();
+    private static Map<String,ArrayList<Borrow>> BorrHolder = new HashMap<String,ArrayList<Borrow>>();
     public BorrowFileDAO(   @Value("${spring.datasource.url}") String database,
                             @Value("${spring.datasource.username}") String datauser,
                             @Value("${spring.datasource.password}") String datapass
     ){
-        this.comm = new Commonfuncs(database, datauser, datapass);
+        BorrowFileDAO.comm = new Commonfuncs(database, datauser, datapass);
         loadBorrows();
     }
 
-    public boolean loadBorrows() throws RuntimeException{
+    public static boolean loadBorrows() throws RuntimeException{
         try {
             borrowers.clear();
             BorrHolder.clear();
@@ -102,17 +102,17 @@ public class BorrowFileDAO implements BorrowDAO{
     public Boolean createBorrow(String accName, String borrDate, int bookId, String bookName) {
         try {
             Borrow newBor = new Borrow(accName, borrDate, bookId, bookName);
-            if(this.BorrHolder.containsKey(accName)){
-                for(Borrow i:this.BorrHolder.get(accName)){
+            if(BorrowFileDAO.BorrHolder.containsKey(accName)){
+                for(Borrow i:BorrowFileDAO.BorrHolder.get(accName)){
                     if(i.getBookId()==bookId){
                         System.out.println("False Cuz Book Exists"); 
                         return false;
                     }
                 }
             }
-            if(this.comm.setQuery("INSERT INTO borrows VALUES("+bookId + ", '" + borrDate+"', '"+accName+"', '"+bookName+"');")){
-                if(!this.BorrHolder.containsKey(accName)){
-                    this.BorrHolder.put(accName, new ArrayList<Borrow>());
+            if(BorrowFileDAO.comm.setQuery("INSERT INTO borrows VALUES("+bookId + ", '" + borrDate+"', '"+accName+"', '"+bookName+"');")){
+                if(!BorrowFileDAO.BorrHolder.containsKey(accName)){
+                    BorrowFileDAO.BorrHolder.put(accName, new ArrayList<Borrow>());
                     borrowers.add(new Tag(0, accName));
                 }
                 for(int i = 0; i<borrowers.size();i++){
@@ -120,7 +120,7 @@ public class BorrowFileDAO implements BorrowDAO{
                         borrowers.set(i, new Tag(borrowers.get(i).getTagId()+1,accName));
                     }
                 }
-                this.BorrHolder.get(accName).add(newBor);
+                BorrowFileDAO.BorrHolder.get(accName).add(newBor);
                 return true;
             }
             System.out.println("False Cuz SQL"); 
@@ -134,10 +134,10 @@ public class BorrowFileDAO implements BorrowDAO{
     @Override
     public Boolean deleteBorrow(String accName, int bookId) {
         try {
-            if(this.comm.setQuery("DELETE FROM borrows WHERE accName = '"+accName+"' AND bookId = "+bookId+";")){
-                if(this.BorrHolder.containsKey(accName)){
+            if(BorrowFileDAO.comm.setQuery("DELETE FROM borrows WHERE accName = '"+accName+"' AND bookId = "+bookId+";")){
+                if(BorrowFileDAO.BorrHolder.containsKey(accName)){
                     ArrayList<Borrow> temp = new ArrayList<Borrow>();
-                    for(Borrow i:this.BorrHolder.get(accName)){
+                    for(Borrow i:BorrowFileDAO.BorrHolder.get(accName)){
                         if(i.getBookId()!=bookId){
                             temp.add(i);
                         }
@@ -147,7 +147,7 @@ public class BorrowFileDAO implements BorrowDAO{
                             borrowers.set(i, new Tag(borrowers.get(i).getTagId()-1,accName));
                         }
                     }
-                    this.BorrHolder.put(accName,temp);
+                    BorrowFileDAO.BorrHolder.put(accName,temp);
                     return true;
                 }
             }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import com.library.model.Account;
 import com.library.persistance.Commonfuncs;
+import com.library.persistance.Borrow.BorrowFileDAO;
 
 import org.springframework.beans.factory.annotation.Value;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -14,7 +15,6 @@ import org.springframework.beans.factory.annotation.Value;
 public class AccountFileDAO implements AccountDAO {
     private static int nextId;
     private Commonfuncs comm;
-
     public AccountFileDAO(  @Value("${spring.datasource.url}") String database ,
                             @Value("${spring.datasource.username}") String datauser,
                             @Value("${spring.datasource.password}") String datapass
@@ -127,22 +127,31 @@ public class AccountFileDAO implements AccountDAO {
     public boolean updateAccount(int accID, String accName, String accPass) {
         try {
             boolean retVal = true;
-            ResultSet ress = comm.getQuery("SELECT * FROM accounts WHERE accId = "+accID+";");
+            
+            ResultSet ress = comm.getQuery("SELECT accId FROM accounts WHERE accName = '"+accName+"';");
+            if(ress.next()){
+                if(ress.getInt("accId")!=accID){
+                    return false;
+                }
+            }
+            ress = comm.getQuery("SELECT * FROM accounts WHERE accId = "+accID+";");
             if(ress==null){
                 retVal = false;
-                System.out.println("T'was null");
             }else{
                 if(!ress.next()){
                     retVal = false;
-                    System.out.println("T'wasn't next");
                 }else{
-                    if(!ress.getString("accName").equals(accName)){
-                        retVal = retVal && comm.setQuery(("UPDATE accounts SET accName = '" + accName.toLowerCase() + "' WHERE accId = '" + accID+"';"));
+                    String prevName = ress.getString("accName");
+                    if(!prevName.equals(accName)){
+                        retVal = retVal && comm.setQuery(("UPDATE accounts SET accName = '" + accName.toLowerCase() + "' WHERE accId = " + accID+";"));
+                        retVal = retVal && comm.setQuery(("UPDATE borrows SET accName = '" + accName.toLowerCase() + "' WHERE accName = '" + prevName+"';")); 
+                        retVal = retVal && BorrowFileDAO.loadBorrows();
                     }
                     if(!ress.getString("accPass").equals(accPass)){
                         retVal = retVal && comm.setQuery(("UPDATE accounts SET accPass = '" + accPass + "' WHERE accId = '" + accID+"';"));
                     } 
                 }
+
                 ress.getStatement().getConnection().close();
             }
             return retVal;
@@ -156,18 +165,25 @@ public class AccountFileDAO implements AccountDAO {
     @Override
     public boolean deleteAccount(int accID, String accPass) {
         try {
+            String prevName = ";";
             boolean retVal = true;
-            ResultSet ress = comm.getQuery("SELECT accId FROM accounts WHERE accId = "+accID+" AND accPass = '"+accPass+"';");
+            ResultSet ress = comm.getQuery("SELECT * FROM accounts WHERE accId = "+accID+" AND accPass = '"+accPass+"';");
             if(ress == null){
                 retVal = false;
             }else{
                 if(!ress.next()){
                     retVal = false;
-                }else if(!comm.setQuery("DELETE FROM accounts WHERE accId = "+accID+";")){
+                }else{
+                    prevName = ress.getString("accName");
+                }
+                if(!comm.setQuery("DELETE FROM accounts WHERE accId = "+accID+";")){
+                    retVal = false;
+                }else if(!comm.setQuery("DELETE FROM borrows WHERE accName = '"+prevName+"';")){
                     retVal = false;
                 }
                 ress.getStatement().getConnection().close();
             }
+            BorrowFileDAO.loadBorrows();
             return retVal;
         } catch (Exception e) {
             return false;

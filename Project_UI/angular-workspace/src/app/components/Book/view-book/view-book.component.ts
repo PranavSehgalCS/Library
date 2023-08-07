@@ -11,15 +11,18 @@ import { Title } from '@angular/platform-browser';
 import { BookService } from 'src/app/services/book.service';
 import { BorrowService } from 'src/app/services/borrow.service';
 import { AccountService } from 'src/app/services/account.service';
+import { Borrow } from 'src/app/model/Borrow';
+import { DomElementSchemaRegistry } from '@angular/compiler';
 @Component({
   selector: 'app-view-book',
   templateUrl: './view-book.component.html',
   styleUrls: ['../bookStyles.css']
 })
 export class ViewBookComponent {
-  
+  private curState:boolean = false; 
   public tagArray:string[]= [];
   public bookArray:Book[] = [];
+  public myBorrows:Borrow[] = [];
   public reload:boolean = true;
   public isAdmin:boolean = false;
   constructor(
@@ -36,7 +39,6 @@ export class ViewBookComponent {
       this.isAdmin = accService.isAdmin();
     }
   }
-
   ngOnInit(){
     this.bookService.getBooks(-1).subscribe(res => {
       if(res!= null && res!= undefined){
@@ -51,8 +53,18 @@ export class ViewBookComponent {
         this.reload = true;
       }else{
         alert("ERROR while getting books");
-      }});
+      }
+    });
+    
+    this.bService.getMyBorrows(this.accService.getAccName()).subscribe( res => {
+      if(res!= null && res!= undefined){
+        this.myBorrows = res;
+      }else{
+        alert("ERROR While getting your borrows");
+      }
+    });
   }
+
 
 
   private DTS(dat:Date):string{
@@ -66,14 +78,18 @@ export class ViewBookComponent {
   
   }
   async doBorrow(bookId:number, bookName:string){
-    if(confirm("Are you sure you want to borrow the book : \n" + bookName)){
+    if(this.isBorrowed(bookId)){
+      alert('This book has already been borrowed!');
+    }else if(confirm("Are you sure you want to borrow the book : \n" + bookName)){
       var currTime:Date = new Date();
       var currName:string = this.accService.getAccName();
       currTime = new Date(currTime.getTime() + 14*24*60*60000);
       
       this.bService.createBorrow(currName, this.DTS(currTime),bookId,bookName).subscribe(res => {
-        if(res == true){ 
+        if(res == true){
           alert("Book has been borrowed successfully, please return it by :\n" +this.DTS(currTime) );
+          this.myBorrows.push(new Borrow('','',bookId,''  ));
+          this.reload = true;
         }else if(res == false){
           alert("Book Has Already Been borrowed");
         }else{
@@ -137,5 +153,28 @@ export class ViewBookComponent {
         }
       });
     }
+  }
+
+  public isBorrowed(bookId:number):boolean{
+    for(let curBo of this.myBorrows){
+      if(curBo.bookId == bookId){
+        this.curState = true;
+        return true;
+      }
+    }
+    this.curState = false;
+    return false;
+  }
+  public getClass():string{
+    if(this.curState){
+      return "borrow"
+    }
+    return "borrowed";
+  }
+  public getString():string{
+    if(this.curState){
+      return "Book Borrowed"
+    }
+    return "Borrow Book"
   }
 }

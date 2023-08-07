@@ -12,6 +12,7 @@
     Project_UI  : Contains front-end Files
     Project_API : Contains back-end API Files
 
+    README.md : Description of project
     .gitignore : list of files to be ignored by git
     Run_Servers : Runs shell script in bash terminal to run server
     

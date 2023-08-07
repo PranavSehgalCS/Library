@@ -13,7 +13,7 @@ import java.util.HashMap;
 
 import java.sql.ResultSet;
 import com.library.persistance.Commonfuncs;
-
+import com.library.persistance.Borrow.BorrowFileDAO;
 import com.library.model.Book;
 import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Value;
@@ -218,9 +218,11 @@ public class BookFileDAO implements BookDAO{
         if(BookHolder.containsKey(bookId)){
             boolean retVal = BookFileDAO.comm.setQuery("DELETE FROM books WHERE bookId = "+bookId+";");
             retVal = retVal && BookFileDAO.comm.setQuery("DELETE FROM tags WHERE bookId = "+bookId+";");
+            retVal = retVal && BookFileDAO.comm.setQuery("DELETE FROM borrows WHERE bookId = "+bookId+";"); 
             if(retVal){
                 BookHolder.remove(bookId);
             }
+            BorrowFileDAO.loadBorrows();
             return retVal;
         }else{
             return false;

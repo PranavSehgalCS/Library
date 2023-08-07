@@ -63,22 +63,30 @@ h2{
     padding:5px;
     font-size: 16px;
     background-color: var(--color-tag);}
-.borrow{
+.borrow, .borrowed{
+    width:90%;
+    padding-top: 2%;
     font-size: 25px;
     margin-top: 20px;
     margin-left: 10px;
-    width:90%;
-    padding-top: 2%;
     padding-bottom: 2%;
     border-radius: 5px;
     margin-bottom: 75px;
     cursor: pointer;
-    background-color: #ff6f89;}
-.borrow:hover{
+    background-color: #ff6f89;
+}
+.borrowed{
+    background-color: #5d9eff;
+}
+.borrow:hover, .borrowed:hover{
     padding-top: 5%;
     padding-bottom: 5%;
     transition-duration: 0.2s;
-    background-color: #e84f6b; }
+    background-color: #e84f6b;
+}
+.borrowed:hover{
+    background-color: #257cff;
+}
 .editow{background-color: #5d9eff;} 
 .editow, .deltow, .editow:not(:hover),.deltow:not(:hover){
     width:42%;

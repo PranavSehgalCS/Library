@@ -60,7 +60,7 @@ export class AccPageComponent {
     accName = accName.toLowerCase().trim();
     if(accName.length==0){
       this.errMsg="Please Enter A Name";
-    }else if(accName == this.curAcc.accName){
+    }else if(accName == this.accService.getAccName()){
       this.errMsg="New Name Can't Be Old Name";
     }else{
       this.errMsg="";

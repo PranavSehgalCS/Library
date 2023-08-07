@@ -29,7 +29,8 @@
 
         <!--     BOOKSHELF     BOOKSHELF     BOOKSHELF     BOOKSHELF     BOOKSHELF-->
         <div class = "bookshelf">
-            <div *ngFor="let book of bookArray" >
+            <div *ngFor="let book of bookArray">
+                <div style="font-size:0;">{{isBorrowed(book.bookId)}}</div>
                 <div class="book">
                     <h1>{{book.bookName}}</h1>
                     <h2>by</h2>
@@ -45,7 +46,11 @@
                     <div class = "deltow" (click)="deleteBooks(book)"> Delete </div>
                 </div> 
 
-                <div *ngIf="!isAdmin" class = "borrow" (click)="doBorrow(book.bookId, book.bookName)">Borrow Book</div>
+                <div *ngIf="!isAdmin" >
+                    <div class="{{this.getClass()}}" (click)="doBorrow(book.bookId, book.bookName)">
+                        {{this.getString()}}
+                    </div>
+                </div>
                 
                 
             </div>  
